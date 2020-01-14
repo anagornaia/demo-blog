@@ -26,11 +26,11 @@ public class UserEntity {
     @Column(name = "uuid", unique = true)
     private String uuid;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Email
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")

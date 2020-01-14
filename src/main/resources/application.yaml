@@ -9,3 +9,8 @@ spring:
   h2:
     console:
       enabled: true
+  thymeleaf:
+    enabled: true
+    prefix: /WEB-INF/views/
+    cache: false
+    encoding: UTF-8
