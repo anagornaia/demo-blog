@@ -11,7 +11,7 @@ spring:
     platform: org.hibernate.dialect.PostgreSQL9Dialect
   thymeleaf:
     enabled: true
-    prefix: webapp/WEB-INF/views/
+    prefix: WEB-INF/views/
     cache: false
     encoding: UTF-8
   liquibase:

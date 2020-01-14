@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Set;
 
 @Data
 @Entity
@@ -32,6 +31,4 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "blog_post_id")
     BlogPostEntity blogPost;
-
-
 }
