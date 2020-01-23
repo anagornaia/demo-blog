@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=LC_BLOG
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  h2:
+    console:
+      enabled: true
+  thymeleaf:
+    enabled: true
+    prefix: /WEB-INF/views/
+    cache: false
+    encoding: UTF-8
+  liquibase:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    change-log: classpath:db/blog/db.changelog.master.xml
+    enabled: true

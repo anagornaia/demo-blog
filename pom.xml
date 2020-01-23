@@ -17,8 +17,8 @@
     <properties>
         <java.version>1.8</java.version>
         <encoding>UTF-8</encoding>
-        <projectlombok.lombok>1.18.10</projectlombok.lombok>
-        <h2database.h2>1.4.200</h2database.h2>
+        <postgresql.version>42.2.9</postgresql.version>
+        <jaxb-api.version>2.3.2</jaxb-api.version>
     </properties>
 
     <dependencies>
@@ -37,7 +37,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${projectlombok.lombok}</version>
         </dependency>
 
         <dependency>
@@ -52,10 +51,15 @@
             </exclusions>
         </dependency>
 
+        <!--DB Configuration-->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2database.h2}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -65,7 +69,58 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+                    <propertyFile>${project.basedir}/target/classes/liquibase.properties</propertyFile>
+                    <skip>false</skip>
+                </configuration>
+                <dependencies> <!-- workaround https://liquibase.jira.com/browse/CORE-3508 -->
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${jaxb-api.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>prepareSchema</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <configuration>
+                            <dropFirst>true</dropFirst>
+                            <propertyFileWillOverride>false</propertyFileWillOverride>
+                            <propertyFile>${project.basedir}/target/classes/liquibase.properties</propertyFile>
+                            <url>jdbc:postgresql://localhost:5432/postgres</url>
+                            <changeLogFile>
+                                ${project.basedir}/src/main/resources/db/blog/db.changelog.schema.master.xml
+                            </changeLogFile>
+                            <skip>false</skip>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>${postgresql.version}</version>
+                                <scope>runtime</scope>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
