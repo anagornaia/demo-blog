@@ -20,7 +20,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
-    @SequenceGenerator(name="user_id_generator", sequenceName = "user_id_seq")
+    @SequenceGenerator(name = "user_id_generator", sequenceName = "seq_user", allocationSize = 10)
     private Long id;
 
     @Column(name = "uuid", unique = true)
@@ -36,9 +36,6 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "secret")
-    private String secret;
-
-    @OneToMany (mappedBy = "user")
-    Collection<PostEntity> posts;
+    @OneToMany(mappedBy = "user")
+    Collection<BlogPostEntity> posts;
 }
