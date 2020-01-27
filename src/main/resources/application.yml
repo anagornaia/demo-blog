@@ -1,17 +1,17 @@
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: true
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false #https://vkuzel.com/spring-boot-jpa-hibernate-atomikos-postgresql-exception
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=LC_BLOG
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-  h2:
-    console:
-      enabled: true
+    platform: org.hibernate.dialect.PostgreSQL9Dialect
   thymeleaf:
     enabled: true
-    prefix: /WEB-INF/views/
+    prefix: webapp/WEB-INF/views/
     cache: false
     encoding: UTF-8
   liquibase:
